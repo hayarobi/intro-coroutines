@@ -3,6 +3,8 @@ package contributors
 import contributors.Contributors.LoadingStatus.*
 import contributors.Variant.*
 import kotlinx.coroutines.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import tasks.*
 import java.awt.event.ActionListener
 import javax.swing.SwingUtilities
@@ -19,6 +21,9 @@ enum class Variant {
     PROGRESS,         // Request6Progress
     CHANNELS          // Request7Channels
 }
+
+val uilog: Logger = LoggerFactory.getLogger("ui-control")
+
 
 interface Contributors: CoroutineScope {
 
@@ -124,6 +129,7 @@ interface Contributors: CoroutineScope {
         startTime: Long,
         completed: Boolean = true
     ) {
+        uilog.info("updating results...")
         updateContributors(users)
         updateLoadingStatus(if (completed) COMPLETED else IN_PROGRESS, startTime)
         if (completed) {
